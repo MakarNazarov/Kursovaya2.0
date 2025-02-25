@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шахматы для всех</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <style>
+        body {
+            background: #fdf6f0; /* Светлый молочный фон */
+            font-family: 'Georgia', serif;
+            color: #5c482b; /* Темный коричневый текст */
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #8b5a2b; /* Темный кофейный фон */
+            color: #fff; /* Белый текст */
+            text-align: center;
+            padding: 2em 0;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #e6d5b8; /* Светлый жёлтый цвет при наведении */
+        }
+
+        .section {
+            background-color: #f7e5d7; /* Крепкий светлый кофе фон для секций */
+            padding: 40px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Стили для больших модальных окон */
+        .modal-dialog {
+            max-width: 900px; /* Увеличенная ширина модального окна */
+        }
+
+        .modal-content {
+            border-radius: 8px; /* Края */
+        }
+
+        .modal-header, .modal-footer {
+            background-color: #8b5a2b; /* Темный кофейный фон для заголовка и подвала модальных окон */
+            color: white;
+        }
+
+        .modal-title {
+            color: #e6d5b8; /* Светло-кремовый цвет заголовка */
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #8b5a2b; /* Темный кофейный фон для подвала */
+            color: white;
+        }
+
+        .btn-light {
+            background-color: #e6d5b8; /* Слоновая кость для кнопок */
+            color: #5c482b; /* Темный текст */
+            transition: background-color 0.3s;
+        }
+
+        .btn-light:hover {
+            background-color: #c5b49a; /* Более темный цвет при наведении */
+            color: white; /* Белый текст при наведении */
+        }
+
+        .btn-primary {
+            background-color: #704b30; /* Темный кофейный */
+            border-color: #704b30;
+        }
+
+        .btn-primary:hover {
+            background-color: #5c482b; /* Более темный кофейный при наведении */
+            border-color: #5c482b;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="#skills">Навыки</a></li>
+            <li><a href="#visualization">Визуализация</a></li>
+            <li><a href="#resources">Ресурсы</a></li>
+            <li><a href="#contact">Контакты</a></li>
+            <li><a href="#chesstest">Шахматный Тест</a></li>
+        </ul>
+    </nav>
+    <h1>Шахматы для всех</h1>
+    <p>Улучшите свои навыки в шахматах с помощью ресурсов и практики!</p>
+</header>
+<main class="container">
+   <section id="skills" class="section">
+    <h2>Навыки</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card" onclick="openModal('openingsModal')">
+                <img src="img/debiut.webp" class="card-img-top" alt="Дебюты">
+                <div class="card-body">
+                    <h5 class="card-title">Дебюты</h5>
+                    <p class="card-text">Изучите лучшие стратегии для быстрых побед в начале игры.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" onclick="openModal('readingModal')">
+                <img src="img/pozitsii.jpg" class="card-img-top" alt="Изучение и анализ партий Великих чемпионов прошлого">
+                <div class="card-body">
+                    <h5 class="card-title">Анализ позиций</h5>
+                    <p class="card-text">Научитесь анализировать позиции.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" onclick="openModal('timeManagementModal')">
+                <img src="img/Vremia.webp" class="card-img-top" alt="Управление временем">
+                <div class="card-body">
+                    <h5 class="card-title">Управление временем</h5>
+                    <p class="card-text">Правильно распределяйте свои временные ресурсы.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="visualization" class="section">
+    <h2>Рассчет вариантов в голове</h2>
+    <p>Рассчет вариантов в голове - ключевое умение шахматиста, позволяющее предугадывать ходы соперника.</p>
+    <div class="row">
+        <div class="col-md-6">
+            <img src="img/Tactic.jpg" class="img-fluid" alt="Визуализация в шахматах">
+        </div>
+        <div class="col-md-6">
+            <p>Упражнения на визуализацию помогут развивать это умение.</p>
+        </div>
+    </div>
+</section>
+
+    <section id="resources" class="section">
+        <h2>Ресурсы</h2>
+        <div class="row">
+            <div class="col-md-3 text-center">
+                <a href="https://lichess.org/" target="_blank" class="btn btn-light">Lichess</a>
+            </div>
+            <div class="col-md-3 text-center">
+                <a href="https://www.chess.com/" target="_blank" class="btn btn-light">Chess.com</a>
+            </div>
+            <div class="col-md-3 text-center">
+                <a href="https://chess24.com/" target="_blank" class="btn btn-light">Chess24</a>
+            </div>
+            <div class="col-md-3 text-center">
+                <a href="https://www.chessbase.com/" target="_blank" class="btn btn-light">ChessBase</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="chesstest" class="section text-center">
+        <h2>Шахматный тест</h2>
+        <p>Хотите проверить свои знания шахмат? Пройдите наш тест и узнайте, насколько хорошо вы разбираетесь в игре!</p>
+        <button id="startTestBtn" class="btn btn-primary">Начать Тест</button>
+    </section>
+
+    <section id="contact" class="section">
+        <h2>Контакты</h2>
+        <form id="contact-form" onsubmit="return sendContactForm()">
+            <div class="form-group">
+                <label for="name">Имя:</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Сообщение:</label>
+                <textarea class="form-control" id="message" name="message" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </form>
+        <p>Если у вас есть вопросы, предложения или вы хотите поделиться своим опытом, пожалуйста, заполните форму выше!</p>
+    </section>
+</main>
+
+<!-- Модальные окна с Bootstrap -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Заголовок</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="" alt="Изображение" class="img-fluid mb-3">
+                <p id="modalText">Текст модального окна.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2023 Шахматы для всех. Все права защищены.</p>
+</footer>
+
+<script>
+function openModal(modalName) {
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    const modalImage = document.getElementById('modalImage');
+
+    switch (modalName) {
+        case 'openingsModal':
+            modalTitle.innerText = 'Открытия';
+            modalText.innerText = 'Открытия - лучшие стратегии для начала игры. Например, 1.e4 или 1.d4.';
+            modalImage.src = 'img/debiutikimodal.webp'; // Путь к изображению большого размера
+            break;
+        case 'readingModal':
+            modalTitle.innerText = 'Чтение позиций';
+            modalText.innerText = 'Чтение позиций — это умение анализировать шахматные ситуации.';
+            modalImage.src = 'img/analizzzz.jpg'; // Путь к изображению
+            break;
+        case 'timeManagementModal':
+            modalTitle.innerText = 'Управление временем';
+            modalText.innerText = 'Управление временем — важный аспект шахмат.';
+            modalImage.src = 'img/vremia.jpg'; // Путь к изображению
+            break;
+        default:
+            modalTitle.innerText = 'Ошибка';
+            modalText.innerText = 'Неизвестная ошибка.';
+            modalImage.src = '';
+    }
+    $('#modal').modal('show');
+}
+
+document.getElementById('startTestBtn').onclick = function() {
+    window.location.href = 'chessTest.html'; // Переход на страницу теста
+}
+
+function sendContactForm() {
+    alert("Ваше сообщение отправлено!");
+    return false; // Предотвращает перезагрузку страницы
+}
+</script>
+
+</body>
+</html>

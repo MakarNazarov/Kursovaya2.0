@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChessMJU</title>
+    <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.css">
+    <link rel="stylesheet" href="styles1.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+    <style>
+        body {
+            background-size: cover;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-y: scroll;
+            animation: backgroundAnimation 10s infinite alternate;
+        }
+
+        @keyframes backgroundAnimation {
+            from { background-color: #f5e7d4; }
+            to { background-color: #d5b49e; }
+        }
+
+        header {
+            text-align: center;
+            padding: 20px 0;
+            background-color: rgba(116, 92, 69, 0.9);
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #board {
+            width: 400px;
+            height: 400px;
+            margin: 20px auto;
+            border: 2px solid #5c3d28;
+            border-radius: 8px;
+        }
+
+        .quiz-section {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            color: #5c3d28;
+        }
+
+        .question p {
+            font-weight: bold;
+        }
+
+        .result {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #007700;
+        }
+
+        button {
+            background-color: #5c3d28;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #745c45;
+            transform: scale(1.05);
+        }
+
+        .section {
+            display: none;
+            padding: 20px;
+            border: 2px solid #5c3d28;
+            margin: 20px 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 8px;
+        }
+
+        .active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .icon {
+            margin-right: 10px; 
+        }
+        
+        #emailForm {
+            display: none;
+            margin-top: 20px;
+        }
+
+        input[type="email"] {
+            padding: 10px;
+            width: calc(100% - 22px);
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .placeholder {
+            background-image: url(images/pawn_w.png);
+            background-size: cover;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>ChessMJU</h1>
+    <p>Проверяйте свои знания в шахматах!</p>
+    <button id="showChessboard"><i class="fas fa-chess-board icon"></i>Показать шахматную доску</button>
+    <button id="showQuiz"><i class="fas fa-question-circle icon"></i>Начать тест</button>
+</header>
+<main>
+    <section id="chessboard" class="section active">
+        <h2>Шахматная доска</h2>
+        <div id="board"></div>
+        <button id="startPositionBtn">Начать с позиции</button>
+        <button id="clearBoardBtn">Очистить доску</button>
+    </section>
+    <section id="quiz" class="section">
+        <h2>Вопросы</h2>
+        <form id="quizForm" onsubmit="return checkQuiz(event)">
+            <div class="question">
+                <p>1. Сколько полей на шахматной доске?</p>
+                <label><input type="radio" name="q1" value="64"> 64</label><br>
+                <label><input type="radio" name="q1" value="32"> 32</label><br>
+                <label><input type="radio" name="q1" value="24"> 24</label><br>
+                <label><input type="radio" name="q1" value="16"> 16</label>
+            </div>
+            <div class="question">
+                <p>2. Какое самая мощная шахматная фигура?</p>
+                <label><input type="radio" name="q2" value="ферзь"> Ферзь</label><br>
+                <label><input type="radio" name="q2" value="ладья"> Ладья</label><br>
+                <label><input type="radio" name="q2" value="король"> Король</label><br>
+                <label><input type="radio" name="q2" value="слон"> Слон</label>
+            </div>
+            <div class="question">
+                <p>3. Как называется ход, при котором король и ладья движутся одновременно?</p>
+                <label><input type="radio" name="q3" value="рокировка"> Рокировка</label><br>
+                <label><input type="radio" name="q3" value="долгий ход"> Долгий ход</label><br>
+                <label><input type="radio" name="q3" value="шах"> Шах</label><br>
+                <label><input type="radio" name="q3" value="мат"> Мат</label>
+            </div>
+            <div class="question">
+                <p>4. Сколько типов фигур в шахматах?</p>
+                <label><input type="radio" name="q4" value="6"> 6</label><br>
+                <label><input type="radio" name="q4" value="7"> 7</label><br>
+                <label><input type="radio" name="q4" value="5"> 5</label><br>
+                <label><input type="radio" name="q4" value="4"> 4</label>
+            </div>
+            <div class="question">
+                <p>5. Как называется положение, когда король под шахом?</p>
+                <label><input type="radio" name="q5" value="шах"> Шах</label><br>
+                <label><input type="radio" name="q5" value="мат"> Мат</label><br>
+                <label><input type="radio" name="q5" value="пат"> Пат</label><br>
+                <label><input type="radio" name="q5" value="развод"> Гарде</label>
+            </div>
+            <div class="question">
+                <p>6. Какой ход делает пешка, когда она движется впервые?</p>
+                <label><input type="radio" name="q6" value="1 поле"> 1 поле</label><br>
+                <label><input type="radio" name="q6" value="2 поля"> 2 поля</label><br>
+                <label><input type="radio" name="q6" value="по диагонали"> По диагонали</label><br>
+                <label><input type="radio" name="q6" value="1 и 2 поля"> 1 и 2 поля</label>
+            </div>
+            <div class="question">
+                <p>7. Как вы называете ситуацию, когда у игрока нет хода, который не проигрывает?</p>
+                <label><input type="radio" name="q7" value="пат"> Цукцванг</label><br>
+                <label><input type="radio" name="q7" value="мат"> Мат</label><br>
+                <label><input type="radio" name="q7" value="шах"> Шах</label><br>
+                <label><input type="radio" name="q7" value="форточка"> Форточка</label>
+            </div>
+            <div class="question">
+                <p>8. Кто первый чемпион мира по шахматам?</p>
+                <label><input type="radio" name="q8" value="Стейниц"> Стейниц</label><br>
+                <label><input type="radio" name="q8" value="Капабланка"> Капабланка</label><br>
+                <label><input type="radio" name="q8" value="Каспаров"> Каспаров</label><br>
+                <label><input type="radio" name="q8" value="Аэщли"> Аэщли</label>
+            </div>
+            <div class="question">
+                <p>9. Что происходит, если короля ставят в мат?</p>
+                <label><input type="radio" name="q9" value="партия проиграна"> Партия проиграна</label><br>
+                <label><input type="radio" name="q9" value="партия выиграна"> Партия выиграна</label><br>
+                <label><input type="radio" name="q9" value="ничья"> Ничья</label><br>
+                <label><input type="radio" name="q9" value="перерыв"> Перерыв</label>
+            </div>
+            <div class="question">
+                <p>10. Сколько ладей у каждого игрока?</p>
+                <label><input type="radio" name="q10" value="2"> 2</label><br>
+                <label><input type="radio" name="q10" value="3"> 3</label><br>
+                <label><input type="radio" name="q10" value="1"> 1</label><br>
+                <label><input type="radio" name="q10" value="0"> 0</label>
+            </div>
+            <button type="submit">Отправить тест</button>
+        </form>
+        <div id="result" class="result"></div>
+        <div id="emailForm">
+            <h3>Введите ваш email, чтобы получить программу:</h3>
+            <input type="email" id="email" placeholder="Ваш email" required>
+            <button id="sendEmailBtn">Отправить</button>
+        </div>
+    </section>
+</main>
+
+<script>
+    const board = ChessBoard('board', {
+        draggable: true,
+        position: 'start',
+        onDragStart: onDragStart,
+        onDrop: onDrop,
+        onSnapEnd: onSnapEnd,
+        
+    });
+
+
+
+    const chess = new Chess();
+
+    function onDragStart (source, piece, position, orientation) {
+        if (chess.game_over()) return false;  // Запретить ходы после окончания игры
+        if ((chess.color === 'w' && piece.search(/^b/) !== -1) || (chess.color === 'b' && piece.search(/^w/) !== -1)) {
+            return false;  // Запретить захваты противника
+        }
+    }
+
+    function onDrop (source, target) {
+        const move = chess.move({
+            from: source,
+            to: target,
+            promotion: 'q' // Промоция пешек в ферзя по умолчанию
+        });
+
+        removeGreySquares(); // Убираем выделение
+        if (move === null) return 'snapback'; // Если ход невозможен, вернуть фигуру обратно
+
+        renderMoveHistory();
+    }
+
+    function onSnapEnd () {
+        board.position(chess.fen());
+    }
+
+    function removeGreySquares () {
+        $('#board .square-55d63').css('background', '');
+    }
+
+    function renderMoveHistory() {
+        const moves = chess.history();
+        console.log('История ходов: ' + moves.join(', '));
+    }
+    
+    document.getElementById('startPositionBtn').addEventListener('click', () => {
+        chess.reset();
+        board.start();
+    });
+
+    document.getElementById('clearBoardBtn').addEventListener('click', () => {
+        chess.clear();
+        board.clear();
+    });
+
+    function checkQuiz(event) {
+        event.preventDefault();
+        const form = event.target;
+        const resultElement = document.getElementById('result');
+        let score = 0;
+
+        const answers = {
+            q1: '64',
+            q2: 'ферзь',
+            q3: 'рокировка',
+            q4: '6',
+            q5: 'шах',
+            q6: '1 и 2 поля',
+            q7: 'Цукцванг',
+            q8: 'Стейниц',
+            q9: 'партия проиграна',
+            q10: '2'
+        };
+
+
+        for (let question in answers) {
+            const selected = form[question].value;
+            if (selected === answers[question]) {
+                score++;
+            }
+        }
+
+        const totalQuestions = Object.keys(answers).length;
+        resultElement.textContent = `Вы ответили правильно на ${score} из ${totalQuestions} вопросов.`;
+        document.getElementById('emailForm').style.display = 'block'; // Показываем форму для ввода email
+    }
+
+    document.getElementById('sendEmailBtn').addEventListener('click', function () {
+        const email = document.getElementById('email').value;
+        alert(`Письмо с программой будет отправлено на ${email}`);
+        document.getElementById('emailForm').reset(); // Очищаем форму
+    });
+
+    document.getElementById('showChessboard').addEventListener('click', function () {
+        document.getElementById('chessboard').classList.add('active');
+        document.getElementById('quiz').classList.remove('active');
+    });
+
+    document.getElementById('showQuiz').addEventListener('click', function () {
+        document.getElementById('quiz').classList.add('active');
+        document.getElementById('chessboard').classList.remove('active');
+    });
+
+    const initialPosition = [
+        "r", "n", "b", "q", "k", "b", "n", "r",
+        "p", "p", "p", "p", "p", "p", "p", "p",
+        "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "",
+        "", "", "", "", "", "", "", "",
+        "P", "P", "P", "P", "P", "P", "P", "P",
+        "R", "N", "B", "Q", "K", "B", "N", "R"
+    ];
+    
+    const pieceImages = {
+        'p': 'images/Peshka.png',
+        'r': 'images/rook_b.png',
+        'n': 'images/knight_b.png',
+        'b': 'images/bishop_b.png',
+        'q': 'images/queen_b.png',
+        'k': 'images/king_b.png',
+        'P': 'images/pawn_w.png',
+        'R': 'images/rook_w.png',
+        'N': 'images/knight_w.png',
+        'B': 'images/bishop_w.png',
+        'Q': 'images/queen_w.png',
+        'K': 'images/king_w.png'
+    };
+    
+    function createBoard() {
+        const board = document.getElementById('board');
+        board.innerHTML = '';  // Очистка доски
+        
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                const square = document.createElement('div');
+                square.className = 'square ' + ((row + col) % 2 === 0 ? 'light' : 'dark');
+                square.dataset.row = row;
+                square.dataset.col = col;
+    
+                const piece = initialPosition[row * 8 + col];
+                if (piece) {
+                    const img = document.createElement('img');
+                    img.src = pieceImages[piece];
+                    img.alt = piece;
+                    img.className = 'piece';
+                    square.appendChild(img);
+                }
+    
+                board.appendChild(square);
+            }
+        }
+    }
+</script>
+
+
+
+</body>
+</html>
